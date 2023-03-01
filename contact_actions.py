@@ -36,11 +36,11 @@ def add_contact():
 
         # if i == 1:
     text = ui.input_data(d2[d1[i]])
-    if re.match('^[а-яёА-ЯЁ]{2,}[-][а-яёА-ЯЁ]{2,}$', text) != None:
-        f = ch.check_double_surname(text)
-    if re.match('^[а-яёА-ЯЁ]{2,}[-][а-яёА-ЯЁ]{2,}$', text) == None:
-        f = ch.check_textfield(text)
-        f = str(f).capitalize()
+    # if re.match('^[а-яёА-ЯЁ]{2,}[-][а-яёА-ЯЁ]{2,}$', text) != None:
+    f = ch.check_double_surname(text)
+    # if re.match('^[а-яёА-ЯЁ]{2,}[-][а-яёА-ЯЁ]{2,}$', text) == None:
+    #     f = ch.check_textfield(text)
+    f = str(f).capitalize()
     string_in_file.append(f)
     try:
         results = pd.read_csv('contacts.csv')
@@ -62,43 +62,55 @@ def add_contact():
             file_writer.writerow(string_in_file)
 
 
-def rename(data):
+def rename(nuber_str):
     '''
     Поиск контакта по имени / фамилии.
     '''
-    data_int = int(data)
-    try:
-        open('contacts.csv')
-        with open('contacts.csv', 'r', encoding='utf-8') as f:
-            data_str = f.read()
-            line11 = data_str.split('\n', 11)[data_int]
-            print("Строка "+ data + "выглядит следующим образом:")
-            print(line11)
-            print("Введите строку ее заменющую:")
-            nuber_str = input()
-        with open('contacts.csv', 'r', encoding='utf-8') as f:    
-            lines = f.readlines()
-        with open('contacts.csv', 'w', encoding='utf-8') as fw:
-            ptr = 0
-            for line in lines:
-                if ptr != data_int:
-                    fw.write(line)
+
+
+    flag = False
+    while flag == False:
+        try:
+            open('contacts.csv')
+            try:
+                nuber_str_int = int(nuber_str)
+            except ValueError:
+                print(Fore.GREEN + Back.RED +
+                        '\nНужно ввести число! Введите еще раз')
+                print(Fore.BLUE + Back.WHITE)
+                nuber_str = input()
+                continue
+            with open('contacts.csv', 'r', encoding='utf-8') as fr:
+                lines = fr.readlines()
+                if (len(lines) < nuber_str_int+1) or (nuber_str_int < 1):
+                    print(Fore.GREEN + Back.RED +
+                         '\nВы ввели неправильный номер строки. Введите номер еще раз')
+                    print(Fore.BLUE + Back.WHITE)
+                    nuber_str = input()
+                    continue
                 else:
-                    fw.write(nuber_str+"\n")    
-                ptr += 1     
-
-
-            # file_reader = csv.reader(phonebook, delimiter='|')
-            # for row in file_reader:
-            #     if data.capitalize() in row:
-            #         count += 1
-            #         line.append(row)
-            #         print(row)
-            # if count == 0:
-            #     print('Нет совпадений.')
-    except FileNotFoundError:
-        print(Fore.GREEN + Back.RED +
-              'Телефонная книга пуста, поэтому Вы не можете ее открыть!')
+                    flag = True 
+                    open('contacts.csv')
+                    with open('contacts.csv', 'r', encoding='utf-8') as f:
+                        data_str = f.read()
+                        line11 = data_str.split('\n', 11)[nuber_str_int]
+                        print(f"Строка "+ nuber_str + " выглядит следующим образом:")
+                        print(line11)
+                        print("Введите строку ее заменющую:")
+                        nuber_str = input()
+                    with open('contacts.csv', 'r', encoding='utf-8') as f:    
+                        lines = f.readlines()
+                    with open('contacts.csv', 'w', encoding='utf-8') as fw:
+                        ptr = 0
+                        for line in lines:
+                            if ptr != nuber_str_int:
+                                fw.write(line)
+                            else:
+                                fw.write(nuber_str+"\n")    
+                            ptr += 1     
+        except FileNotFoundError:
+            print(Fore.GREEN + Back.RED +
+                'Телефонная книга пуста, поэтому Вы не можете ее открыть!')
     # return line
 
 
@@ -124,16 +136,7 @@ def open_phonebook():
               'Телефонной книги нет - Вы не можете ее открыть!')
 
 def del_contact(nuber_str):
-    # flag = False
-    # while flag == False:    
-    #     try:
-    #         nuber_str_int = int(nuber_str)
-    #         flag = True
-    #     except ValueError:
-    #         print(Fore.GREEN + Back.RED +
-    #                 '\nНужно ввести число! Введите еще раз')
-    #         print(Fore.BLUE + Back.WHITE)
-    #         nuber_str_int = input()
+
     flag = False
     while flag == False:
         try:
@@ -147,7 +150,6 @@ def del_contact(nuber_str):
                 nuber_str = input()
                 continue
             with open('contacts.csv', 'r', encoding='utf-8') as fr:
-                # reading line by line
                 lines = fr.readlines()
                 if (len(lines) < nuber_str_int+1) or (nuber_str_int < 1):
                     print(Fore.GREEN + Back.RED +
@@ -158,7 +160,6 @@ def del_contact(nuber_str):
                 else:
                     flag = True    
                     ptr = 0        
-                    # opening in writing mode
                     with open('contacts.csv', 'w', encoding='utf-8') as fw:
                         for line in lines:
                             if ptr != nuber_str_int:

@@ -54,8 +54,8 @@ def check_double_surname(text):
         text = input(
             'Слишком много символов! Допустимо не более 40. Повторите ввод:\n')
     else:
-        if re.match('^[а-яёА-ЯЁ]{2,}[-][а-яёА-ЯЁ]{2,}$', text) != None:
-            text_list = text.split('-')
+        # if re.match('^[а-яёА-ЯЁ]{2,}[-][а-яёА-ЯЁ]{2,}$', text) != None:
+        text_list = text.split('-')
         for i in range(0, len(text_list)):
             text_list[i] = text_list[i].capitalize()
         text = '-'.join(text_list)
@@ -89,17 +89,17 @@ def check_textfield(text, optional=1):
                 print(Fore.GREEN + Back.RED)
                 text = input(
                     'Слишком много символов! Допустимо не более 40. Повторите ввод:\n')
-            else:
-                if re.match('^[а-яёА-ЯЁ]{2,40}$', text) != None:
-                    flag = True
-                    return text
-                elif re.match('^[а-яёА-ЯЁ]{2,}[-][а-яёА-ЯЁ]{2,}$', text) != None:
-                    flag = True
-                    return text
-                else:
-                    print(Fore.GREEN + Back.RED)
-                    text = input(
-                        'Неверный ввод данных! Должны быть только буквы русского алфавита. Не менее 2 и не более 40 символов. Повторите ввод:\n')
+            # else:
+            #     if re.match('^[а-яёА-ЯЁ]{2,40}$', text) != None:
+            #         flag = True
+            #         return text
+            #     elif re.match('^[а-яёА-ЯЁ]{2,}[-][а-яёА-ЯЁ]{2,}$', text) != None:
+            #         flag = True
+            #         return text
+            #     else:
+            #         print(Fore.GREEN + Back.RED)
+            #         text = input(
+            #             'Неверный ввод данных! Должны быть только буквы русского алфавита. Не менее 2 и не более 40 символов. Повторите ввод:\n')
 
 
 def check_free_textfield(text):
