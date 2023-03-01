@@ -20,8 +20,9 @@ def add_contact():
     '''
     ui.print_instructions_for_input()
     string_in_file, header = [], []
-    for i in range(1, 7):
-        header.append(d2[d1[i]])
+    # for i in range(1, 1):
+    i = 1
+    header.append(d2[d1[i]])
 
         # if i == 1:
             
@@ -33,35 +34,17 @@ def add_contact():
         #         f = ch.check_textfield(text)
         #         f = str(f).capitalize()
 
-        if i == 1:
-            text = ui.input_data(d2[d1[i]])
-            if re.match('^[а-яёА-ЯЁ]{2,}[-][а-яёА-ЯЁ]{2,}$', text) != None:
-                f = ch.check_double_surname(text)
-            if re.match('^[а-яёА-ЯЁ]{2,}[-][а-яёА-ЯЁ]{2,}$', text) == None:
-                f = ch.check_textfield(text)
-                f = str(f).capitalize()
-        if i == 2:
-            f = ch.check_textfield(ui.input_data(
-                d2[d1[i]]))
-            f = str(f).capitalize()
-        if i == 3:
-            f = ch.check_textfield(ui.input_data(
-                d2[d1[i]]), 0)
-            f = str(f).capitalize()
-        if i == 4:
-            f = ch.remove_spaces_in_string(ui.input_data(d2[d1[i]]))
-            f = ch.check_mobile(f)
-        if i == 5:
-            f = ch.remove_spaces_in_string(ui.input_data(d2[d1[i]]))
-            f = ch.check_homephone(f)
-        if i == 6:
-            f = ch.check_free_textfield(ui.input_data(
-                d2[d1[i]]))
-            f = str(f).capitalize()
-        string_in_file.append(f)
+        # if i == 1:
+    text = ui.input_data(d2[d1[i]])
+    if re.match('^[а-яёА-ЯЁ]{2,}[-][а-яёА-ЯЁ]{2,}$', text) != None:
+        f = ch.check_double_surname(text)
+    if re.match('^[а-яёА-ЯЁ]{2,}[-][а-яёА-ЯЁ]{2,}$', text) == None:
+        f = ch.check_textfield(text)
+        f = str(f).capitalize()
+    string_in_file.append(f)
     try:
         results = pd.read_csv('contacts.csv')
-        print(results)
+        # print(results)
         open('contacts.csv')
         with open('contacts.csv', 'a', encoding='utf-8') as phonebook:
             file_writer = csv.writer(
@@ -79,27 +62,44 @@ def add_contact():
             file_writer.writerow(string_in_file)
 
 
-def find_contact(data):
+def rename(data):
     '''
     Поиск контакта по имени / фамилии.
     '''
-    line = []
-    count = 0
+    data_int = int(data)
     try:
         open('contacts.csv')
-        with open('contacts.csv', encoding='utf-8') as phonebook:
-            file_reader = csv.reader(phonebook, delimiter='|')
-            for row in file_reader:
-                if data.capitalize() in row:
-                    count += 1
-                    line.append(row)
-                    print(row)
-            if count == 0:
-                print('Нет совпадений.')
+        with open('contacts.csv', 'r', encoding='utf-8') as f:
+            data_str = f.read()
+            line11 = data_str.split('\n', 11)[data_int]
+            print("Строка "+ data + "выглядит следующим образом:")
+            print(line11)
+            print("Введите строку ее заменющую:")
+            nuber_str = input()
+        with open('contacts.csv', 'r', encoding='utf-8') as f:    
+            lines = f.readlines()
+        with open('contacts.csv', 'w', encoding='utf-8') as fw:
+            ptr = 0
+            for line in lines:
+                if ptr != data_int:
+                    fw.write(line)
+                else:
+                    fw.write(nuber_str+"\n")    
+                ptr += 1     
+
+
+            # file_reader = csv.reader(phonebook, delimiter='|')
+            # for row in file_reader:
+            #     if data.capitalize() in row:
+            #         count += 1
+            #         line.append(row)
+            #         print(row)
+            # if count == 0:
+            #     print('Нет совпадений.')
     except FileNotFoundError:
         print(Fore.GREEN + Back.RED +
               'Телефонная книга пуста, поэтому Вы не можете ее открыть!')
-    return line
+    # return line
 
 
 def open_phonebook():
@@ -114,7 +114,7 @@ def open_phonebook():
             for row in file_reader:
                 if len(row) > 0:
                     if i > 0:
-                        print(f"{i} row")
+                        print(f"{i} - {str(row)[2:-2]}")  
                     else: 
                         print(row) 
                     i = i + 1          

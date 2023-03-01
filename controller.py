@@ -19,9 +19,9 @@ def button_click():
         # print('Функция в стадии разработки.')
     elif operation == 4:
         data = ui.rename_text()
-        result = ca.find_contact(data)
-    elif operation == 5:
-        print('Функция в стадии разработки.')
-    elif operation == 6:
-        print('Функция в стадии разработки.')
+        result = ca.rename(data)
+    # elif operation == 5:
+    #     print('Функция в стадии разработки.')
+    # elif operation == 6:
+    #     print('Функция в стадии разработки.')
     # ui.view_result(result)

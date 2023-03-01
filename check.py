@@ -6,14 +6,14 @@ init()
 
 def check_number_operation(input_string: Optional[str]) -> Optional[int]:
     '''
-    Функция проверки на целое число от 1 до 6.
+    Функция проверки на целое число от 1 до 4.
     '''
     while type:
         print(Fore.BLUE + Back.WHITE)
         number_oper = input(input_string)
         try:
             number_oper = int(number_oper)
-            if 0 < number_oper < 7:
+            if 0 < number_oper < 5:
                 return number_oper
             else:
                 print(Fore.GREEN + Back.RED +
